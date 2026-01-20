@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-body: Inter, sans-serif;
+    --font-heading: DM Sans, sans-serif;
+  }
+  
+  * {
+    @apply border-neutral-400;
+  }
+  
+  body {
+    @apply font-body bg-neutral-50 text-neutral-900 antialiased;
+  }
+  
+  /* Headings use heading font */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  /* Button Base */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded font-body font-medium transition-all duration-200;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply btn bg-brand-primary text-white px-4 py-3;
+    @apply hover:bg-brand-primary-dark;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-neutral-100 text-neutral-900 border border-neutral-400 px-4 py-3;
+    @apply hover:bg-neutral-200;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  /* Input Base */
+  .input {
+    @apply w-full rounded border border-neutral-400 bg-white px-4 py-3 font-body text-body-base text-neutral-900;
+    @apply placeholder:text-neutral-600;
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent;
+    @apply disabled:bg-neutral-200 disabled:cursor-not-allowed;
+  }
+  
+  .input-error {
+    @apply input border-semantic-error focus:ring-semantic-error;
+  }
+  
+  /* Card Base */
+  .card {
+    @apply bg-neutral-100 rounded-lg border border-neutral-400 shadow;
+  }
+  
+  /* Link Base */
+  .link {
+    @apply text-brand-primary underline-offset-4 hover:underline transition-colors duration-200;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:rounded;
+  }
+}
+
+@layer utilities {
+  /* Typography utilities */
+
+  .heading-h1 {
+    @apply font-heading text-heading-h1;
+  }
+
+  .heading-h2 {
+    @apply font-heading text-heading-h2;
+  }
+
+  .heading-h3 {
+    @apply font-heading text-heading-h3;
+  }
+
+  .heading-h4 {
+    @apply font-heading text-heading-h4;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

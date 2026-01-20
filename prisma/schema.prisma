@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+model Waitlist {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      String   // 'seeker', 'owner', 'both'
+  area      String
+  
+  // Metadata
+  ipAddress String?
+  userAgent String?
+  referrer  String?
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Email tracking
+  emailSent    Boolean  @default(false)
+  emailSentAt  DateTime?
+  emailOpened  Boolean  @default(false)
+  emailOpenedAt DateTime?
+  
+  // Status
+  isActive     Boolean  @default(true)
+  unsubscribed Boolean  @default(false)
+  
+  @@index([email])
+  @@index([createdAt])
+  @@index([area])
+  @@index([role])
+}
+
+model Analytics {
+  id        String   @id @default(cuid())
+  event     String   // 'page_view', 'signup_attempt', 'signup_success', 'exit_intent_shown', 'exit_intent_converted'
+  data      Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  
+  @@index([event])
+  @@index([createdAt])
+}
+
+model GlobalStats {
+  id           String   @id @default(cuid())
+  signupCount  Int      @default(0)
+  spotsLeft    Int      @default(500)
+  lastUpdated  DateTime @default(now())
+  
+  @@map("global_stats")
+}
