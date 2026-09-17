@@ -8,33 +8,46 @@ export default function HeroStats() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     fetch('/api/waitlist')
       .then(res => res.json())
       .then(data => {
         setStats({
-          signupCount: data.signupCount,
-          spotsLeft: data.spotsLeft,
+          signupCount: data.signupCount || 0,
+          spotsLeft: data.spotsLeft ?? 500,
         });
       })
-      .catch(() => {
-      });
+      .catch(() => {});
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return (
+      <div className="inline-flex items-center gap-6 bg-white/10 px-5 py-3 rounded-lg backdrop-blur-sm">
+        <div className="text-center">
+          <div className="text-2xl font-bold text-white">-</div>
+          <div className="text-xs text-white/70">Founding members</div>
+        </div>
+        <div className="w-px h-8 bg-white/20" aria-hidden="true" />
+        <div className="text-center">
+          <div className="text-2xl font-bold text-white">500</div>
+          <div className="text-xs text-white/70">Spots left</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="inline-flex items-center gap-6 bg-white bg-opacity-10 px-5 py-3 rounded backdrop-blur-sm">
+    <div className="inline-flex items-center gap-6 bg-white/10 px-5 py-3 rounded-lg backdrop-blur-sm">
       <div className="text-center">
-        <div className="text-heading-h3 font-bold text-white">{stats.signupCount}</div>
-        <div className="text-body-small text-white opacity-80">Members joined</div>
+        <div className="text-2xl font-bold text-white">{stats.signupCount}</div>
+        <div className="text-xs text-white/70">Founding members</div>
       </div>
-      
-      <div className="w-px h-8 bg-white opacity-20" aria-hidden="true" />
-      
+
+      <div className="w-px h-8 bg-white/20" aria-hidden="true" />
+
       <div className="text-center">
-        <div className="text-heading-h3 font-bold text-white">{stats.spotsLeft}</div>
-        <div className="text-body-small text-white opacity-80">Spots remaining</div>
+        <div className="text-2xl font-bold text-white">{stats.spotsLeft}</div>
+        <div className="text-xs text-white/70">Spots remaining</div>
       </div>
     </div>
   );
