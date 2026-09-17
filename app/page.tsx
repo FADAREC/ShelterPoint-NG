@@ -1,3 +1,4 @@
+import UrgencyBar from '@/components/hero/UrgencyBar';
 import Hero from '@/components/hero/Hero';
 import Problem from '@/components/sections/Problem';
 import Solution from '@/components/sections/Solution';
@@ -10,6 +11,7 @@ import Footer from '@/components/layout/Footer';
 export default function Home() {
   return (
     <main className="min-h-screen">
+      <UrgencyBar />
       <Hero />
       <Problem />
       <Solution />
