@@ -1,39 +1,51 @@
-import HeroStats from './HeroStats';
 import HeroForm from './HeroForm';
+import HeroStats from './HeroStats';
 
 export default function Hero() {
   return (
-    <section className="relative bg-brand-primary">
-      <div className="absolute inset-0 bg-neutral-900 opacity-5" aria-hidden="true" />
+    <section className="relative bg-neutral-900 overflow-hidden">
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-brand-primary/20 via-transparent to-transparent" aria-hidden="true" />
       
-      <div className="relative max-w-6xl mx-auto px-4 py-10">
-        <div className="max-w-3xl mx-auto space-y-6 text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded">
-            <div className="w-2 h-2 rounded-full bg-semantic-success" aria-hidden="true" />
-            <span className="text-body-small font-medium text-neutral-900">
-              Lagos' First Direct Owner-Seeker Platform
+      <div className="relative max-w-5xl mx-auto px-4 pt-12 pb-16 sm:pt-16 sm:pb-20">
+        <div className="max-w-3xl mx-auto text-center space-y-6">
+          
+          {/* Exclusive badge */}
+          <div className="inline-flex items-center gap-2 bg-brand-primary/15 border border-brand-primary/30 px-4 py-1.5 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse" aria-hidden="true" />
+            <span className="text-body-small font-medium text-brand-primary tracking-wide">
+              FOUNDING MEMBER ACCESS
             </span>
           </div>
 
-          {/* Heading */}
-          <h1 className="text-heading-h1 text-white">
-            Find verified Lagos housing without the delays and uncertainty
+          {/* Main headline */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight">
+            Verified Lagos homes for people who refuse agent wahala
           </h1>
           
-          {/* Subheading */}
-          <p className="text-body-large text-white opacity-90 max-w-2xl mx-auto">
-            Connect directly with property owners through a verified platform. Transparent pricing, verified listings, and a guaranteed 14-day move-in timeline.
+          {/* Subheadline */}
+          <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto leading-relaxed">
+            Join the private waitlist for Lagos professionals. Priority access. Founding member rates. Zero fake listings.
+          </p>
+
+          {/* FOMO line */}
+          <p className="text-sm text-brand-primary font-medium">
+            Limited founding spots. Only 500 early members will lock the preferred rate.
           </p>
 
           {/* Stats */}
           <HeroStats />
         </div>
         
-        {/* Form */}
-        <div className="mt-8">
+        {/* Email-first form */}
+        <div className="mt-10 max-w-md mx-auto">
           <HeroForm />
         </div>
+
+        {/* Trust line */}
+        <p className="mt-6 text-center text-sm text-neutral-400">
+          NDPR compliant. No spam. Unsubscribe anytime.
+        </p>
       </div>
     </section>
   );
