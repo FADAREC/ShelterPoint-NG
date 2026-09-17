@@ -3,43 +3,35 @@
 import { useEffect, useState } from 'react';
 
 export default function UrgencyBar() {
-  const [stats, setStats] = useState({ spotsLeft: 500, days: 6, hours: 14, minutes: 33 });
+  const [spotsLeft, setSpotsLeft] = useState(500);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    
-    // Fetch real stats from API
+
     fetch('/api/waitlist')
       .then(res => res.json())
       .then(data => {
-        setStats(prev => ({ ...prev, spotsLeft: data.spotsLeft }));
+        if (typeof data.spotsLeft === 'number') {
+          setSpotsLeft(data.spotsLeft);
+        }
       })
-      .catch(err => console.error('Failed to fetch stats:', err));
-
-    const timer = setInterval(() => {
-      setStats(prev => {
-        if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1 };
-        if (prev.hours > 0) return { ...prev, days: prev.days, hours: prev.hours - 1, minutes: 59 };
-        if (prev.days > 0) return { ...prev, days: prev.days - 1, hours: 23, minutes: 59 };
-        return prev;
-      });
-    }, 60000);
-
-    return () => clearInterval(timer);
+      .catch(() => {});
   }, []);
 
   if (!mounted) {
     return (
-      <div className="sticky top-0 z-50 bg-primary text-neutral-warm py-2 px-4 text-center text-sm font-bold">
-        ⚡ BETA FILLING FAST: Limited spots remaining
+      <div className="sticky top-0 z-50 bg-brand-primary text-white py-2.5 px-4 text-center text-sm font-medium">
+        Founding member spots are limited. Priority access for the first 500 only.
       </div>
     );
   }
 
   return (
-    <div className="sticky top-0 z-50 bg-primary text-neutral-warm py-2 px-4 text-center text-sm font-bold">
-      ⚡ BETA FILLING FAST: Only {stats.spotsLeft} spots left | Early access ends in {stats.days}d {stats.hours}h {stats.minutes}m
+    <div className="sticky top-0 z-50 bg-brand-primary text-white py-2.5 px-4 text-center text-sm font-medium">
+      {spotsLeft > 0
+        ? `Only ${spotsLeft} founding member spots left. Priority access and preferred rate for early members.`
+        : 'Founding member list is full. Join the general waitlist for future access.'}
     </div>
   );
 }
