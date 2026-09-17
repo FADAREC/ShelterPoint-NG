@@ -9,15 +9,27 @@ datasource db {
 
 model Waitlist {
   id        String   @id @default(cuid())
-  name      String
   email     String   @unique
-  role      String   // 'seeker', 'owner', 'both'
-  area      String
+  name      String?
+  role      String?  // 'seeker', 'owner', 'both'
+  area      String?
+  
+  // Referral system
+  referralCode   String   @unique @default(cuid())
+  referredBy     String?
+  referralCount  Int      @default(0)
+  inspectionCredits Int   @default(0)
+  
+  // Progressive profile
+  profileCompleted Boolean @default(false)
   
   // Metadata
   ipAddress String?
   userAgent String?
   referrer  String?
+  utmSource String?
+  utmMedium String?
+  utmCampaign String?
   
   // Timestamps
   createdAt DateTime @default(now())
@@ -34,14 +46,16 @@ model Waitlist {
   unsubscribed Boolean  @default(false)
   
   @@index([email])
+  @@index([referralCode])
   @@index([createdAt])
   @@index([area])
   @@index([role])
+  @@index([referredBy])
 }
 
 model Analytics {
   id        String   @id @default(cuid())
-  event     String   // 'page_view', 'signup_attempt', 'signup_success', 'exit_intent_shown', 'exit_intent_converted'
+  event     String   // 'page_view', 'signup_attempt', 'signup_success', 'profile_completed', 'referral_shared', 'referral_converted'
   data      Json?
   ipAddress String?
   userAgent String?
