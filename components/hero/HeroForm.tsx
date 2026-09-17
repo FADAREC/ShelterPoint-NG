@@ -1,100 +1,76 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
-import Select from '@/components/ui/Select';
 import Card from '@/components/ui/Card';
-import type { WaitlistFormData, FormErrors } from '@/lib/types';
-
-const ROLE_OPTIONS = [
-  { value: '', label: 'Select your interest' },
-  { value: 'seeker', label: 'Find a home (Tenant)' },
-  { value: 'owner', label: 'List property (Landlord)' },
-  { value: 'both', label: 'Both' },
-];
-
-const AREA_OPTIONS = [
-  { value: '', label: 'Select preferred area' },
-  { value: 'lekki', label: 'Lekki' },
-  { value: 'ikeja', label: 'Ikeja' },
-  { value: 'vi', label: 'Victoria Island' },
-  { value: 'yaba', label: 'Yaba' },
-  { value: 'ikoyi', label: 'Ikoyi' },
-  { value: 'surulere', label: 'Surulere' },
-  { value: 'ajah', label: 'Ajah' },
-  { value: 'maryland', label: 'Maryland' },
-  { value: 'festac', label: 'Festac' },
-  { value: 'other', label: 'Other Lagos area' },
-];
-
-const APARTMENT_TYPE = [
-  { value: '', label: 'Select apartment type' },
-  { value: 'Mini-flat', label: 'Mini-flat' },
-  { value: 'serviced-apartment', label: 'Serviced Apartment' },
-  { value: 'duplex', label: 'Duplex' },
-  { value: 'flat', label: 'Flat' },
-  { value: 'detached-house', label: 'Detached House' },
-  { value: 'semi-detached-house', label: 'Semi-Detached House' },
-  { value: 'terraced-house', label: 'Terraced House' },
-  { value: 'other', label: 'Other' },
-  { value: 'studio-apartment', label: 'Studio Apartment' },
-    
-]
+import type { FormErrors, SignupResponse } from '@/lib/types';
 
 export default function HeroForm() {
-  const [formData, setFormData] = useState<WaitlistFormData>({
-    name: '',
-    email: '',
-    role: '',
-    area: '',
-  });
+  const searchParams = useSearchParams();
+  const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [spotNumber, setSpotNumber] = useState<number | null>(null);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [referredBy, setReferredBy] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({ ...prev, [name]: undefined }));
+  useEffect(() => {
+    const ref = searchParams.get('ref');
+    if (ref) {
+      setReferredBy(ref);
     }
-    setServerError(null);
-  };
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setServerError(null);
+    setErrors({});
+
+    if (!email || !email.includes('@')) {
+      setErrors({ email: 'Please enter a valid email address' });
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const response = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          referralCode: referredBy || undefined,
+        }),
       });
 
-      const data = await response.json();
+      const data: SignupResponse = await response.json();
 
       if (!response.ok) {
-        if (data.errors) {
-          setErrors(data.errors);
-        } else {
-          setServerError(data.error || 'Something went wrong. Please try again.');
+        if (response.status === 409) {
+          // Already on list - still show success path so they can complete profile
+          setSpotNumber(data.spotNumber || 0);
+          setReferralCode(data.referralCode || null);
+          setSubmitted(true);
+          return;
         }
+        setServerError(data.message || 'Something went wrong. Please try again.');
         return;
       }
 
       setSpotNumber(data.spotNumber);
+      setReferralCode(data.referralCode);
       setSubmitted(true);
-      setFormData({ name: '', email: '', role: '', area: '' });
-      
-      setTimeout(() => {
-        setSubmitted(false);
-        setSpotNumber(null);
-      }, 8000);
+
+      // Store for thank-you / profile completion
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('sp_email', email.trim().toLowerCase());
+        sessionStorage.setItem('sp_spot', String(data.spotNumber));
+        sessionStorage.setItem('sp_ref', data.referralCode);
+      }
 
     } catch (error) {
       setServerError('Network error. Please check your connection.');
@@ -103,90 +79,96 @@ export default function HeroForm() {
     }
   };
 
+  if (submitted && spotNumber !== null) {
+    return (
+      <Card variant="elevated" className="p-6 sm:p-8 text-center space-y-5">
+        <div className="w-14 h-14 mx-auto rounded-full bg-semantic-success/15 flex items-center justify-center">
+          <span className="text-2xl">✓</span>
+        </div>
+        
+        <div className="space-y-2">
+          <h2 className="text-xl font-semibold text-neutral-900">
+            You are on the list
+          </h2>
+          <p className="text-neutral-700">
+            You are founding member <span className="font-semibold text-brand-primary">#{spotNumber}</span>
+          </p>
+        </div>
+
+        <div className="bg-neutral-100 rounded-lg p-4 text-left space-y-1">
+          <p className="text-sm font-medium text-neutral-900">What you locked in:</p>
+          <ul className="text-sm text-neutral-700 space-y-1">
+            <li>• Priority access at launch</li>
+            <li>• Founding member rate</li>
+            <li>• First look at verified listings</li>
+          </ul>
+        </div>
+
+        <div className="pt-2 space-y-3">
+          <p className="text-sm text-neutral-600">
+            Complete your profile so we can match you better, then invite friends for free inspection credits.
+          </p>
+          <a
+            href={`/welcome?spot=${spotNumber}&ref=${referralCode}`}
+            className="inline-flex w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-3 text-sm font-semibold text-white hover:bg-brand-primary-dark transition-colors"
+          >
+            Complete profile and get referral link
+          </a>
+        </div>
+
+        <p className="text-xs text-neutral-500">
+          Check your email for confirmation.
+        </p>
+      </Card>
+    );
+  }
+
   return (
-    <Card variant="elevated" className="max-w-xl mx-auto p-6">
-      <div className="space-y-2 mb-6">
-        <h2 className="text-heading-h3 text-neutral-900">Join the waitlist</h2>
-        <p className="text-body-base text-neutral-700">
-          Early members receive 50% off their first transaction (normally 7% of rent value).
+    <Card variant="elevated" className="p-6 sm:p-8">
+      <div className="space-y-1 mb-5 text-center">
+        <h2 className="text-lg font-semibold text-neutral-900">
+          Claim your founding spot
+        </h2>
+        <p className="text-sm text-neutral-600">
+          Priority access + preferred rate for early members
         </p>
       </div>
-      
-      {submitted && spotNumber && (
-        <div className="mb-6 p-4 bg-semantic-success-bg border border-semantic-success rounded">
-          <p className="text-body-base font-medium text-neutral-900">
-            Confirmed. You're spot #{spotNumber} on the waitlist.
-          </p>
-          <p className="text-body-small text-neutral-700 mt-1">
-            Check your email for next steps.
-          </p>
+
+      {serverError && (
+        <div className="mb-4 p-3 bg-semantic-error-bg border border-semantic-error/30 rounded-lg">
+          <p className="text-sm text-neutral-900">{serverError}</p>
         </div>
       )}
 
-      {serverError && (
-        <div className="mb-6 p-4 bg-semantic-error-bg border border-semantic-error rounded">
-          <p className="text-body-small text-neutral-900">{serverError}</p>
-        </div>
-      )}
-      
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Full name"
-          name="name"
-          type="text"
-          value={formData.name}
-          onChange={handleChange}
-          error={errors.name}
-          disabled={isSubmitting}
-          required
-        />
-        
         <Input
           label="Email address"
           name="email"
           type="email"
-          value={formData.email}
-          onChange={handleChange}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (errors.email) setErrors({});
+            setServerError(null);
+          }}
           error={errors.email}
           disabled={isSubmitting}
-          required
-        />
-        
-        <Select
-          label="Your interest"
-          name="role"
-          value={formData.role}
-          onChange={handleChange}
-          options={ROLE_OPTIONS}
-          error={errors.role}
-          disabled={isSubmitting}
-          required
-        />
-        
-        <Select
-          label="Preferred area"
-          name="area"
-          value={formData.area}
-          onChange={handleChange}
-          options={AREA_OPTIONS}
-          error={errors.area}
-          disabled={isSubmitting}
+          placeholder="you@email.com"
           required
         />
 
-        <Button 
-          type="submit" 
-          variant="primary" 
-          size="lg" 
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
           className="w-full"
           isLoading={isSubmitting}
-          disabled={submitted}
         >
-          {submitted ? 'Confirmed' : 'Join waitlist'}
+          Join the private waitlist
         </Button>
 
-        <p className="text-body-tiny text-neutral-700 text-center">
-          NDPR compliant. Unsubscribe anytime.
+        <p className="text-xs text-center text-neutral-500">
+          Only 500 founding member spots available
         </p>
       </form>
     </Card>
