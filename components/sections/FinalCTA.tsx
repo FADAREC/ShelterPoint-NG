@@ -11,13 +11,11 @@ export default function FinalCTA() {
       .then(res => res.json())
       .then(data => {
         setStats({
-          signupCount: data.signupCount,
-          spotsLeft: data.spotsLeft,
+          signupCount: data.signupCount || 0,
+          spotsLeft: data.spotsLeft ?? 500,
         });
       })
-      .catch(() => {
-        // Fail silently
-      });
+      .catch(() => {});
   }, []);
 
   const scrollToTop = () => {
@@ -25,25 +23,28 @@ export default function FinalCTA() {
   };
 
   return (
-    <section className="py-10 bg-brand-primary">
-      <div className="max-w-4xl mx-auto px-4 text-center">
-        <h2 className="text-heading-h2 text-white mb-3">
-          Join the waitlist today
+    <section className="py-12 bg-neutral-900">
+      <div className="max-w-3xl mx-auto px-4 text-center">
+        <p className="text-sm font-medium text-brand-primary mb-3 tracking-wide">
+          FOUNDING MEMBER ACCESS
+        </p>
+        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+          Limited spots. Preferred rate. Priority access.
         </h2>
-        <p className="text-body-large text-white opacity-90 mb-6 max-w-2xl mx-auto">
-          {stats.signupCount > 0 
-            ? `${stats.signupCount} members have already joined. ${stats.spotsLeft} spots remain for early access benefits.`
-            : 'Be among the first to access verified Lagos housing with transparent pricing and guaranteed timelines.'}
+        <p className="text-neutral-300 mb-8 max-w-xl mx-auto">
+          {stats.signupCount > 0
+            ? `${stats.signupCount} founding members have already joined. ${stats.spotsLeft} preferred spots remain.`
+            : 'Join the private list for Lagos professionals who refuse agent wahala.'}
         </p>
         <Button
-          variant="secondary"
+          variant="primary"
           size="lg"
           onClick={scrollToTop}
         >
-          Return to form
+          Claim your founding spot
         </Button>
-        <p className="text-body-small text-white opacity-80 mt-4">
-          No payment required. Launch targeted for March 2026.
+        <p className="text-sm text-neutral-400 mt-5">
+          No payment required. Early members lock the better rate.
         </p>
       </div>
     </section>
