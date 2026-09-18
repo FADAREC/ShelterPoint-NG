@@ -2,21 +2,17 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
-import Select from '@/components/ui/Select';
-import Card from '@/components/ui/Card';
 import type { FormErrors } from '@/lib/types';
 
 const ROLE_OPTIONS = [
   { value: '', label: 'Select your interest' },
-  { value: 'seeker', label: 'Find a home (Tenant)' },
-  { value: 'owner', label: 'List property (Landlord)' },
+  { value: 'seeker', label: 'Find a home' },
+  { value: 'owner', label: 'List property' },
   { value: 'both', label: 'Both' },
 ];
 
 const AREA_OPTIONS = [
-  { value: '', label: 'Select preferred area' },
+  { value: '', label: 'Preferred area' },
   { value: 'lekki', label: 'Lekki' },
   { value: 'vi', label: 'Victoria Island' },
   { value: 'ikoyi', label: 'Ikoyi' },
@@ -58,9 +54,10 @@ function WelcomeContent() {
     }
   }, [searchParams]);
 
-  const shareUrl = typeof window !== 'undefined' && referralCode
-    ? `${window.location.origin}/?ref=${referralCode}`
-    : '';
+  const shareUrl =
+    typeof window !== 'undefined' && referralCode
+      ? `${window.location.origin}/?ref=${referralCode}`
+      : '';
 
   const handleCopy = async () => {
     if (!shareUrl) return;
@@ -69,7 +66,7 @@ function WelcomeContent() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // fallback
+      // ignore
     }
   };
 
@@ -80,17 +77,17 @@ function WelcomeContent() {
     setErrors({});
 
     if (!name || name.length < 2) {
-      setErrors({ name: 'Please enter your name' });
+      setErrors({ name: 'Enter your name' });
       setIsSubmitting(false);
       return;
     }
     if (!role) {
-      setErrors({ role: 'Please select your interest' });
+      setErrors({ role: 'Select your interest' });
       setIsSubmitting(false);
       return;
     }
     if (!area) {
-      setErrors({ area: 'Please select an area' });
+      setErrors({ area: 'Select an area' });
       setIsSubmitting(false);
       return;
     }
@@ -99,12 +96,7 @@ function WelcomeContent() {
       const response = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          name,
-          role,
-          area,
-        }),
+        body: JSON.stringify({ email, name, role, area }),
       });
 
       const data = await response.json();
@@ -117,147 +109,152 @@ function WelcomeContent() {
       setProfileDone(true);
       if (data.referralCode) setReferralCode(data.referralCode);
     } catch {
-      setServerError('Network error. Please try again.');
+      setServerError('Network error. Try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-neutral-50">
-      <div className="max-w-lg mx-auto px-4 py-12 sm:py-16">
-        <div className="text-center mb-8 space-y-3">
-          <div className="inline-flex items-center gap-2 bg-brand-primary/10 border border-brand-primary/20 px-3 py-1 rounded-full">
-            <span className="text-sm font-medium text-brand-primary">FOUNDING MEMBER</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900">
+    <main className="min-h-screen bg-black">
+      <div className="max-w-md mx-auto px-5 py-16 sm:py-24">
+        <div className="text-center mb-12 space-y-3">
+          <p className="text-[13px] tracking-[0.12em] uppercase text-white/35">
+            Founding member
+          </p>
+          <h1 className="text-3xl font-semibold text-white tracking-tight">
             You are in
           </h1>
           {spotNumber && (
-            <p className="text-lg text-neutral-700">
-              Spot <span className="font-semibold text-brand-primary">#{spotNumber}</span> of 500
+            <p className="text-[15px] text-white/45">
+              Spot #{spotNumber} of 500
             </p>
           )}
         </div>
 
-        {/* What they locked */}
-        <Card variant="elevated" className="p-5 mb-6">
-          <p className="text-sm font-medium text-neutral-900 mb-3">Your founding benefits</p>
-          <ul className="space-y-2 text-sm text-neutral-700">
-            <li className="flex gap-2">
-              <span className="text-brand-primary">✓</span>
-              Priority access when we open
-            </li>
-            <li className="flex gap-2">
-              <span className="text-brand-primary">✓</span>
-              Founding member rate (better than standard 7%)
-            </li>
-            <li className="flex gap-2">
-              <span className="text-brand-primary">✓</span>
-              First look at verified listings in Lekki, VI, Ikoyi and more
-            </li>
+        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 mb-6">
+          <p className="text-[12px] tracking-wider uppercase text-white/30 mb-4">
+            Locked in
+          </p>
+          <ul className="space-y-3 text-[15px] text-white/70">
+            <li>Priority access when we open</li>
+            <li>Founding member rate</li>
+            <li>First look at verified listings</li>
           </ul>
-        </Card>
+        </div>
 
-        {/* Profile form */}
         {!profileDone ? (
-          <Card variant="elevated" className="p-5 mb-6">
-            <h2 className="text-lg font-semibold text-neutral-900 mb-1">
+          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 mb-6">
+            <h2 className="text-lg font-semibold text-white tracking-tight mb-1">
               Complete your profile
             </h2>
-            <p className="text-sm text-neutral-600 mb-5">
-              So we can match you with the right homes or landlords.
+            <p className="text-[14px] text-white/40 mb-6">
+              So we can match you properly.
             </p>
 
             {serverError && (
-              <div className="mb-4 p-3 bg-semantic-error-bg rounded-lg">
-                <p className="text-sm text-neutral-900">{serverError}</p>
-              </div>
+              <p className="mb-4 text-[13px] text-red-400">{serverError}</p>
             )}
 
             <form onSubmit={handleProfileSubmit} className="space-y-4">
-              <Input
-                label="Full name"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                error={errors.name}
-                disabled={isSubmitting}
-                required
-              />
-              <Select
-                label="Your interest"
-                name="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                options={ROLE_OPTIONS}
-                error={errors.role}
-                disabled={isSubmitting}
-                required
-              />
-              <Select
-                label="Preferred area"
-                name="area"
-                value={area}
-                onChange={(e) => setArea(e.target.value)}
-                options={AREA_OPTIONS}
-                error={errors.area}
-                disabled={isSubmitting}
-                required
-              />
-              <Button
+              <div>
+                <input
+                  type="text"
+                  placeholder="Full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  disabled={isSubmitting}
+                  className="w-full h-12 px-4 rounded-xl bg-white/[0.06] border border-white/[0.1] text-white text-[15px] placeholder:text-white/30 focus:outline-none focus:border-white/25"
+                />
+                {errors.name && (
+                  <p className="mt-1.5 text-[13px] text-red-400">{errors.name}</p>
+                )}
+              </div>
+
+              <div>
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  disabled={isSubmitting}
+                  className="w-full h-12 px-4 rounded-xl bg-white/[0.06] border border-white/[0.1] text-white text-[15px] focus:outline-none focus:border-white/25 appearance-none"
+                >
+                  {ROLE_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value} className="bg-neutral-900">
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
+                {errors.role && (
+                  <p className="mt-1.5 text-[13px] text-red-400">{errors.role}</p>
+                )}
+              </div>
+
+              <div>
+                <select
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
+                  disabled={isSubmitting}
+                  className="w-full h-12 px-4 rounded-xl bg-white/[0.06] border border-white/[0.1] text-white text-[15px] focus:outline-none focus:border-white/25 appearance-none"
+                >
+                  {AREA_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value} className="bg-neutral-900">
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
+                {errors.area && (
+                  <p className="mt-1.5 text-[13px] text-red-400">{errors.area}</p>
+                )}
+              </div>
+
+              <button
                 type="submit"
-                variant="primary"
-                size="lg"
-                className="w-full"
-                isLoading={isSubmitting}
+                disabled={isSubmitting}
+                className="w-full h-12 rounded-full bg-white text-black text-[15px] font-medium hover:bg-white/90 active:scale-[0.98] transition-all disabled:opacity-50"
               >
-                Save and get referral link
-              </Button>
+                {isSubmitting ? 'Saving...' : 'Save and get referral link'}
+              </button>
             </form>
-          </Card>
+          </div>
         ) : (
-          <Card variant="elevated" className="p-5 mb-6 text-center">
-            <p className="text-sm font-medium text-semantic-success mb-1">Profile saved</p>
-            <p className="text-sm text-neutral-600">We will use this to match you better.</p>
-          </Card>
+          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 mb-6 text-center">
+            <p className="text-[15px] text-white/70">Profile saved</p>
+          </div>
         )}
 
-        {/* Referral section */}
         {referralCode && (
-          <Card variant="elevated" className="p-5">
-            <h2 className="text-lg font-semibold text-neutral-900 mb-1">
-              Earn free inspection credits
+          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6">
+            <h2 className="text-lg font-semibold text-white tracking-tight mb-1">
+              Earn inspection credits
             </h2>
-            <p className="text-sm text-neutral-600 mb-4">
-              Share your link. Every friend who joins gives you 1 free inspection credit when we launch.
+            <p className="text-[14px] text-white/40 mb-5">
+              Every friend who joins with your link gives you 1 free inspection credit.
             </p>
 
-            <div className="flex gap-2 mb-3">
+            <div className="flex gap-2">
               <input
                 type="text"
                 readOnly
                 value={shareUrl}
-                className="flex-1 rounded-lg border border-neutral-300 bg-neutral-50 px-3 py-2 text-sm text-neutral-800"
+                className="flex-1 h-11 px-4 rounded-xl bg-white/[0.06] border border-white/[0.1] text-white/70 text-[13px] focus:outline-none"
               />
-              <Button
+              <button
                 type="button"
-                variant="primary"
                 onClick={handleCopy}
-                className="shrink-0"
+                className="h-11 px-5 rounded-full bg-white text-black text-[13px] font-medium hover:bg-white/90 transition-colors shrink-0"
               >
                 {copied ? 'Copied' : 'Copy'}
-              </Button>
+              </button>
             </div>
 
-            <p className="text-xs text-neutral-500 text-center">
-              Share on WhatsApp, X, or LinkedIn. Premium access is limited.
+            <p className="mt-4 text-[12px] text-white/25 text-center">
+              Share on WhatsApp, X, or LinkedIn
             </p>
-          </Card>
+          </div>
         )}
 
-        <p className="mt-8 text-center text-sm text-neutral-500">
-          <a href="/" className="text-brand-primary hover:underline">
+        <p className="mt-10 text-center">
+          <a href="/" className="text-[13px] text-white/30 hover:text-white/50 transition-colors">
             Back to home
           </a>
         </p>
@@ -268,11 +265,13 @@ function WelcomeContent() {
 
 export default function WelcomePage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-neutral-50">
-        <p className="text-neutral-600">Loading...</p>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-black">
+          <p className="text-white/40 text-sm">Loading...</p>
+        </div>
+      }
+    >
       <WelcomeContent />
     </Suspense>
   );
