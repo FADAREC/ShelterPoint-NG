@@ -9,20 +9,23 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'base', isLoading, children, disabled, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center gap-2 rounded font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-    
+    const baseStyles =
+      'inline-flex items-center justify-center gap-2 font-medium tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98]';
+
     const variants = {
-      primary: 'bg-brand-primary text-white hover:bg-brand-primary-dark',
-      secondary: 'bg-neutral-100 text-neutral-900 border border-neutral-400 hover:bg-neutral-200',
-      ghost: 'text-neutral-900 hover:bg-neutral-200',
+      primary:
+        'bg-neutral-900 text-white hover:bg-neutral-800 focus-visible:ring-neutral-900 rounded-full',
+      secondary:
+        'bg-white text-neutral-900 border border-neutral-200 hover:bg-neutral-50 focus-visible:ring-neutral-400 rounded-full',
+      ghost: 'text-neutral-900 hover:bg-neutral-100 rounded-full',
     };
-    
+
     const sizes = {
-      sm: 'px-3 py-2 text-body-small',
-      base: 'px-4 py-3 text-body-base',
-      lg: 'px-5 py-4 text-body-large',
+      sm: 'px-4 py-2 text-sm',
+      base: 'px-5 py-2.5 text-sm',
+      lg: 'px-6 py-3.5 text-base',
     };
-    
+
     return (
       <button
         ref={ref}
@@ -33,7 +36,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading ? (
           <>
             <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-            <span>Loading...</span>
+            <span>Loading</span>
           </>
         ) : (
           children
