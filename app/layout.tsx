@@ -16,21 +16,21 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'ShelterPoint NG | Founding Member Access',
-  description: 'Private waitlist for verified Lagos housing. Priority access, founding member rates, zero fake listings. For professionals who refuse agent wahala.',
-  keywords: ['Lagos housing', 'verified rentals Lagos', 'Lekki apartments', 'Victoria Island rentals', 'no agent fees', 'founding member housing', 'Lagos professionals'],
-  authors: [{ name: 'ShelterPoint NG' }],
+  title: 'ShelterPoint | Founding Access',
+  description: 'Verified Lagos homes for people who refuse agent wahala. Priority access and preferred rates for founding members.',
+  keywords: ['Lagos housing', 'verified rentals Lagos', 'Lekki apartments', 'Victoria Island rentals', 'founding member'],
+  authors: [{ name: 'ShelterPoint' }],
   openGraph: {
-    title: 'ShelterPoint NG | Founding Member Access',
-    description: 'Priority access to verified Lagos homes. Founding member rates. Limited spots.',
+    title: 'ShelterPoint | Founding Access',
+    description: 'Verified Lagos homes. Priority access. Preferred rate. Limited founding spots.',
     type: 'website',
     locale: 'en_NG',
-    siteName: 'ShelterPoint NG',
+    siteName: 'ShelterPoint',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ShelterPoint NG | Founding Member Access',
-    description: 'Verified Lagos homes for people who refuse agent wahala. Limited founding spots.',
+    title: 'ShelterPoint | Founding Access',
+    description: 'Verified Lagos homes for people who refuse agent wahala.',
   },
   robots: {
     index: true,
@@ -45,7 +45,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${dmSans.variable}`}>
-      <body className="font-body bg-neutral-50 text-neutral-900 antialiased">{children}</body>
+      <body className="font-body bg-black text-white antialiased">{children}</body>
     </html>
   );
 }
