@@ -23,27 +23,23 @@ export default function FinalCTA() {
   };
 
   return (
-    <section className="py-12 bg-neutral-900">
-      <div className="max-w-3xl mx-auto px-4 text-center">
-        <p className="text-sm font-medium text-brand-primary mb-3 tracking-wide">
-          FOUNDING MEMBER ACCESS
+    <section className="py-20 bg-[#0a0a0a]">
+      <div className="max-w-2xl mx-auto px-5 text-center">
+        <p className="text-xs font-medium tracking-widest text-white/40 uppercase mb-4">
+          Founding member access
         </p>
-        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+        <h2 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight mb-4 leading-tight">
           Limited spots. Preferred rate. Priority access.
         </h2>
-        <p className="text-neutral-300 mb-8 max-w-xl mx-auto">
+        <p className="text-white/50 mb-10 max-w-md mx-auto leading-relaxed">
           {stats.signupCount > 0
-            ? `${stats.signupCount} founding members have already joined. ${stats.spotsLeft} preferred spots remain.`
+            ? `${stats.signupCount} founding members have joined. ${stats.spotsLeft} preferred spots remain.`
             : 'Join the private list for Lagos professionals who refuse agent wahala.'}
         </p>
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={scrollToTop}
-        >
+        <Button variant="secondary" size="lg" onClick={scrollToTop}>
           Claim your founding spot
         </Button>
-        <p className="text-sm text-neutral-400 mt-5">
+        <p className="text-xs text-white/30 mt-6">
           No payment required. Early members lock the better rate.
         </p>
       </div>
