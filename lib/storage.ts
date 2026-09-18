@@ -1,3 +1,5 @@
+import type { WaitlistStats } from '@/lib/types';
+
 const STORAGE_KEYS = {
   STATS: 'shelterpoint_stats',
   USER_SIGNED_UP: 'shelterpoint_user_signup',
