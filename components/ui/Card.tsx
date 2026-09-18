@@ -8,15 +8,16 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', ...props }, ref) => {
     const variants = {
-      default: 'bg-neutral-100 border border-neutral-400',
-      bordered: 'bg-white border-2 border-neutral-400',
-      elevated: 'bg-neutral-100 border border-neutral-400 shadow-md',
+      default: 'bg-white border border-neutral-200/80',
+      bordered: 'bg-white border border-neutral-200',
+      elevated:
+        'bg-white border border-neutral-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]',
     };
-    
+
     return (
       <div
         ref={ref}
-        className={cn('rounded-lg', variants[variant], className)}
+        className={cn('rounded-2xl', variants[variant], className)}
         {...props}
       />
     );
