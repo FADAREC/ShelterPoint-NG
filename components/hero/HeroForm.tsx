@@ -1,14 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Card from '@/components/ui/Card';
 import type { FormErrors, SignupResponse } from '@/lib/types';
 
 export default function HeroForm() {
-  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,11 +17,13 @@ export default function HeroForm() {
   const [referredBy, setReferredBy] = useState<string | null>(null);
 
   useEffect(() => {
-    const ref = searchParams.get('ref');
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
     if (ref) {
       setReferredBy(ref);
     }
-  }, [searchParams]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +51,6 @@ export default function HeroForm() {
 
       if (!response.ok) {
         if (response.status === 409) {
-          // Already on list - still show success path so they can complete profile
           setSpotNumber(data.spotNumber || 0);
           setReferralCode(data.referralCode || null);
           setSubmitted(true);
@@ -65,7 +64,6 @@ export default function HeroForm() {
       setReferralCode(data.referralCode);
       setSubmitted(true);
 
-      // Store for thank-you / profile completion
       if (typeof window !== 'undefined') {
         sessionStorage.setItem('sp_email', email.trim().toLowerCase());
         sessionStorage.setItem('sp_spot', String(data.spotNumber));
