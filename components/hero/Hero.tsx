@@ -1,41 +1,46 @@
 import HeroForm from './HeroForm';
-import HeroStats from './HeroStats';
 
 export default function Hero() {
   return (
-    <section className="relative bg-[#0a0a0a] overflow-hidden">
-      <div className="relative max-w-4xl mx-auto px-5 pt-16 pb-20 sm:pt-24 sm:pb-28">
-        <div className="max-w-2xl mx-auto text-center space-y-8">
+    <section className="relative min-h-[100svh] bg-black flex flex-col">
+      {/* Top bar */}
+      <div className="w-full border-b border-white/[0.06]">
+        <div className="max-w-5xl mx-auto px-5 h-12 flex items-center justify-between">
+          <span className="text-[13px] font-medium tracking-tight text-white/90">
+            ShelterPoint
+          </span>
+          <span className="text-[12px] text-white/40">
+            Founding access
+          </span>
+        </div>
+      </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
-            <span className="text-xs font-medium tracking-wide text-white/80 uppercase">
-              Founding member access
-            </span>
-          </div>
+      {/* Main content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-5 py-16 sm:py-20">
+        <div className="w-full max-w-[640px] text-center">
 
-          <h1 className="text-[2.25rem] sm:text-5xl md:text-[3.5rem] font-semibold text-white leading-[1.1] tracking-tight">
-            Verified Lagos homes for people who refuse agent wahala
+          <p className="text-[13px] tracking-[0.12em] uppercase text-white/35 mb-6">
+            Lagos · Private waitlist
+          </p>
+
+          <h1 className="text-[2.75rem] sm:text-[3.75rem] md:text-[4.25rem] font-semibold text-white leading-[1.05] tracking-[-0.03em]">
+            Housing without<br className="hidden sm:block" /> the wahala
           </h1>
 
-          <p className="text-lg sm:text-xl text-white/60 max-w-xl mx-auto leading-relaxed font-normal">
-            Private waitlist for Lagos professionals. Priority access. Founding member rates. Zero fake listings.
+          <p className="mt-6 text-[17px] sm:text-[19px] text-white/50 leading-relaxed max-w-md mx-auto font-normal">
+            Verified homes. Transparent fees. Founding members get priority and the preferred rate.
           </p>
 
-          <p className="text-sm text-white/40">
-            Only 500 founding spots. Preferred rate locked for early members.
+          {/* Form */}
+          <div className="mt-10 sm:mt-12">
+            <HeroForm />
+          </div>
+
+          {/* Quiet social proof */}
+          <p className="mt-8 text-[13px] text-white/30">
+            <span className="text-white/50">498</span> founding spots remaining
           </p>
-
-          <HeroStats />
         </div>
-
-        <div className="mt-12 max-w-md mx-auto">
-          <HeroForm />
-        </div>
-
-        <p className="mt-8 text-center text-xs text-white/30">
-          NDPR compliant. No spam. Unsubscribe anytime.
-        </p>
       </div>
     </section>
   );
