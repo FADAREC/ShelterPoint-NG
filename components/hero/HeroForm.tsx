@@ -1,9 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
-import Card from '@/components/ui/Card';
 import type { FormErrors, SignupResponse } from '@/lib/types';
 
 export default function HeroForm() {
@@ -20,9 +17,7 @@ export default function HeroForm() {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
     const ref = params.get('ref');
-    if (ref) {
-      setReferredBy(ref);
-    }
+    if (ref) setReferredBy(ref);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,7 +27,7 @@ export default function HeroForm() {
     setErrors({});
 
     if (!email || !email.includes('@')) {
-      setErrors({ email: 'Please enter a valid email address' });
+      setErrors({ email: 'Enter a valid email' });
       setIsSubmitting(false);
       return;
     }
@@ -56,7 +51,7 @@ export default function HeroForm() {
           setSubmitted(true);
           return;
         }
-        setServerError(data.message || 'Something went wrong. Please try again.');
+        setServerError(data.message || 'Something went wrong');
         return;
       }
 
@@ -70,7 +65,7 @@ export default function HeroForm() {
         sessionStorage.setItem('sp_ref', data.referralCode);
       }
     } catch {
-      setServerError('Network error. Please check your connection.');
+      setServerError('Network error. Try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -78,97 +73,68 @@ export default function HeroForm() {
 
   if (submitted && spotNumber !== null) {
     return (
-      <Card variant="elevated" className="p-8 text-center space-y-6">
-        <div className="w-12 h-12 mx-auto rounded-full bg-neutral-900 flex items-center justify-center">
-          <span className="text-white text-lg">✓</span>
+      <div className="w-full max-w-md mx-auto text-center space-y-6">
+        <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white text-black text-lg font-medium">
+          ✓
         </div>
-
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold text-neutral-900 tracking-tight">
-            You are on the list
-          </h2>
-          <p className="text-neutral-500">
-            Founding member{' '}
-            <span className="font-semibold text-neutral-900">#{spotNumber}</span>
+          <p className="text-xl font-semibold text-white tracking-tight">
+            You are in
+          </p>
+          <p className="text-[15px] text-white/50">
+            Founding member #{spotNumber}
           </p>
         </div>
-
-        <div className="bg-neutral-50 rounded-xl p-4 text-left space-y-2">
-          <p className="text-xs font-medium text-neutral-400 uppercase tracking-wider">
-            Locked in
-          </p>
-          <ul className="text-sm text-neutral-700 space-y-1.5">
-            <li>Priority access at launch</li>
-            <li>Founding member rate</li>
-            <li>First look at verified listings</li>
-          </ul>
+        <div className="text-[14px] text-white/40 space-y-1">
+          <p>Priority access · Preferred rate · First listings</p>
         </div>
-
-        <div className="space-y-3 pt-1">
-          <p className="text-sm text-neutral-500">
-            Complete your profile, then invite friends for free inspection credits.
-          </p>
-          <a
-            href={`/welcome?spot=${spotNumber}&ref=${referralCode}`}
-            className="inline-flex w-full items-center justify-center rounded-full bg-neutral-900 px-5 py-3.5 text-sm font-medium text-white hover:bg-neutral-800 transition-colors"
-          >
-            Complete profile
-          </a>
-        </div>
-
-        <p className="text-xs text-neutral-400">Check your email for confirmation.</p>
-      </Card>
+        <a
+          href={`/welcome?spot=${spotNumber}&ref=${referralCode}`}
+          className="inline-flex items-center justify-center h-12 px-8 rounded-full bg-white text-black text-[15px] font-medium hover:bg-white/90 transition-colors"
+        >
+          Continue
+        </a>
+        <p className="text-[12px] text-white/25">Check your email</p>
+      </div>
     );
   }
 
   return (
-    <Card variant="elevated" className="p-8">
-      <div className="space-y-1 mb-6 text-center">
-        <h2 className="text-xl font-semibold text-neutral-900 tracking-tight">
-          Claim your founding spot
-        </h2>
-        <p className="text-sm text-neutral-500">
-          Priority access and preferred rate for early members
-        </p>
-      </div>
-
+    <div className="w-full max-w-md mx-auto">
       {serverError && (
-        <div className="mb-4 p-3 bg-red-50 rounded-xl">
-          <p className="text-sm text-red-700">{serverError}</p>
-        </div>
+        <p className="mb-4 text-[13px] text-red-400 text-center">{serverError}</p>
+      )}
+      {errors.email && (
+        <p className="mb-4 text-[13px] text-red-400 text-center">{errors.email}</p>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Email address"
-          name="email"
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+        <input
           type="email"
+          name="email"
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
             if (errors.email) setErrors({});
             setServerError(null);
           }}
-          error={errors.email}
           disabled={isSubmitting}
-          placeholder="you@email.com"
+          placeholder="Email address"
           required
+          className="flex-1 h-12 px-5 rounded-full bg-white/[0.08] border border-white/[0.12] text-white text-[15px] placeholder:text-white/30 focus:outline-none focus:border-white/30 focus:bg-white/[0.1] transition-all"
         />
-
-        <Button
+        <button
           type="submit"
-          variant="primary"
-          size="lg"
-          className="w-full"
-          isLoading={isSubmitting}
+          disabled={isSubmitting}
+          className="h-12 px-7 rounded-full bg-white text-black text-[15px] font-medium hover:bg-white/90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
         >
-          Join the private waitlist
-        </Button>
-
-        <p className="text-xs text-center text-neutral-400">
-          500 founding member spots only
-        </p>
+          {isSubmitting ? 'Joining...' : 'Get access'}
+        </button>
       </form>
-    </Card>
+
+      <p className="mt-4 text-[12px] text-white/25 text-center">
+        No payment. Priority when we open.
+      </p>
+    </div>
   );
 }
