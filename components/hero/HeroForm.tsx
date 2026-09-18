@@ -69,8 +69,7 @@ export default function HeroForm() {
         sessionStorage.setItem('sp_spot', String(data.spotNumber));
         sessionStorage.setItem('sp_ref', data.referralCode);
       }
-
-    } catch (error) {
+    } catch {
       setServerError('Network error. Please check your connection.');
     } finally {
       setIsSubmitting(false);
@@ -79,62 +78,63 @@ export default function HeroForm() {
 
   if (submitted && spotNumber !== null) {
     return (
-      <Card variant="elevated" className="p-6 sm:p-8 text-center space-y-5">
-        <div className="w-14 h-14 mx-auto rounded-full bg-semantic-success/15 flex items-center justify-center">
-          <span className="text-2xl">✓</span>
+      <Card variant="elevated" className="p-8 text-center space-y-6">
+        <div className="w-12 h-12 mx-auto rounded-full bg-neutral-900 flex items-center justify-center">
+          <span className="text-white text-lg">✓</span>
         </div>
-        
+
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold text-neutral-900">
+          <h2 className="text-xl font-semibold text-neutral-900 tracking-tight">
             You are on the list
           </h2>
-          <p className="text-neutral-700">
-            You are founding member <span className="font-semibold text-brand-primary">#{spotNumber}</span>
+          <p className="text-neutral-500">
+            Founding member{' '}
+            <span className="font-semibold text-neutral-900">#{spotNumber}</span>
           </p>
         </div>
 
-        <div className="bg-neutral-100 rounded-lg p-4 text-left space-y-1">
-          <p className="text-sm font-medium text-neutral-900">What you locked in:</p>
-          <ul className="text-sm text-neutral-700 space-y-1">
-            <li>• Priority access at launch</li>
-            <li>• Founding member rate</li>
-            <li>• First look at verified listings</li>
+        <div className="bg-neutral-50 rounded-xl p-4 text-left space-y-2">
+          <p className="text-xs font-medium text-neutral-400 uppercase tracking-wider">
+            Locked in
+          </p>
+          <ul className="text-sm text-neutral-700 space-y-1.5">
+            <li>Priority access at launch</li>
+            <li>Founding member rate</li>
+            <li>First look at verified listings</li>
           </ul>
         </div>
 
-        <div className="pt-2 space-y-3">
-          <p className="text-sm text-neutral-600">
-            Complete your profile so we can match you better, then invite friends for free inspection credits.
+        <div className="space-y-3 pt-1">
+          <p className="text-sm text-neutral-500">
+            Complete your profile, then invite friends for free inspection credits.
           </p>
           <a
             href={`/welcome?spot=${spotNumber}&ref=${referralCode}`}
-            className="inline-flex w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-3 text-sm font-semibold text-white hover:bg-brand-primary-dark transition-colors"
+            className="inline-flex w-full items-center justify-center rounded-full bg-neutral-900 px-5 py-3.5 text-sm font-medium text-white hover:bg-neutral-800 transition-colors"
           >
-            Complete profile and get referral link
+            Complete profile
           </a>
         </div>
 
-        <p className="text-xs text-neutral-500">
-          Check your email for confirmation.
-        </p>
+        <p className="text-xs text-neutral-400">Check your email for confirmation.</p>
       </Card>
     );
   }
 
   return (
-    <Card variant="elevated" className="p-6 sm:p-8">
-      <div className="space-y-1 mb-5 text-center">
-        <h2 className="text-lg font-semibold text-neutral-900">
+    <Card variant="elevated" className="p-8">
+      <div className="space-y-1 mb-6 text-center">
+        <h2 className="text-xl font-semibold text-neutral-900 tracking-tight">
           Claim your founding spot
         </h2>
-        <p className="text-sm text-neutral-600">
-          Priority access + preferred rate for early members
+        <p className="text-sm text-neutral-500">
+          Priority access and preferred rate for early members
         </p>
       </div>
 
       {serverError && (
-        <div className="mb-4 p-3 bg-semantic-error-bg border border-semantic-error/30 rounded-lg">
-          <p className="text-sm text-neutral-900">{serverError}</p>
+        <div className="mb-4 p-3 bg-red-50 rounded-xl">
+          <p className="text-sm text-red-700">{serverError}</p>
         </div>
       )}
 
@@ -165,8 +165,8 @@ export default function HeroForm() {
           Join the private waitlist
         </Button>
 
-        <p className="text-xs text-center text-neutral-500">
-          Only 500 founding member spots available
+        <p className="text-xs text-center text-neutral-400">
+          500 founding member spots only
         </p>
       </form>
     </Card>
