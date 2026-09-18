@@ -22,32 +22,30 @@ export default function HeroStats() {
 
   if (!mounted) {
     return (
-      <div className="inline-flex items-center gap-6 bg-white/10 px-5 py-3 rounded-lg backdrop-blur-sm">
+      <div className="inline-flex items-center gap-8 rounded-2xl border border-white/10 bg-white/5 px-8 py-4">
         <div className="text-center">
-          <div className="text-2xl font-bold text-white">-</div>
-          <div className="text-xs text-white/70">Founding members</div>
+          <div className="text-2xl font-semibold text-white tracking-tight">-</div>
+          <div className="text-xs text-white/40 mt-0.5">Members</div>
         </div>
-        <div className="w-px h-8 bg-white/20" aria-hidden="true" />
+        <div className="w-px h-8 bg-white/10" aria-hidden="true" />
         <div className="text-center">
-          <div className="text-2xl font-bold text-white">500</div>
-          <div className="text-xs text-white/70">Spots left</div>
+          <div className="text-2xl font-semibold text-white tracking-tight">500</div>
+          <div className="text-xs text-white/40 mt-0.5">Spots left</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="inline-flex items-center gap-6 bg-white/10 px-5 py-3 rounded-lg backdrop-blur-sm">
+    <div className="inline-flex items-center gap-8 rounded-2xl border border-white/10 bg-white/5 px-8 py-4">
       <div className="text-center">
-        <div className="text-2xl font-bold text-white">{stats.signupCount}</div>
-        <div className="text-xs text-white/70">Founding members</div>
+        <div className="text-2xl font-semibold text-white tracking-tight">{stats.signupCount}</div>
+        <div className="text-xs text-white/40 mt-0.5">Members</div>
       </div>
-
-      <div className="w-px h-8 bg-white/20" aria-hidden="true" />
-
+      <div className="w-px h-8 bg-white/10" aria-hidden="true" />
       <div className="text-center">
-        <div className="text-2xl font-bold text-white">{stats.spotsLeft}</div>
-        <div className="text-xs text-white/70">Spots remaining</div>
+        <div className="text-2xl font-semibold text-white tracking-tight">{stats.spotsLeft}</div>
+        <div className="text-xs text-white/40 mt-0.5">Spots left</div>
       </div>
     </div>
   );
