@@ -6,23 +6,33 @@ import Card from '@/components/ui/Card';
 const faqs = [
   {
     question: 'How does this affect existing property agents?',
-    answer: 'The platform provides an additional channel for property transactions. Agents can use ShelterPoint to list properties and manage client relationships. This is a complementary service, not a replacement for existing market participants.',
+    answer:
+      'ShelterPoint is complementary, not anti-agent. Registered agents can list with fees disclosed. ShelterCheck helps renters understand a quote before they pay anyone.',
   },
   {
-    question: 'What verification process do you use for property owners?',
-    answer: `All property owners must provide government-issued identification (BVN or NIN), property documentation (Certificate of Occupancy or Governor's Consent), and pass an address verification check before they can list properties.`,
+    question: 'What does ShelterCheck do?',
+    answer:
+      'ShelterCheck is a free move-in cost checker. Enter rent and fees, see day-one cash, what is likely unrecoverable, and flags against current Lagos Tenancy Law 2011. It is not legal advice.',
   },
   {
-    question: `What happens if I don't receive launch access?`,
-    answer: `All waitlist members will receive access notification one week before the beta launch, targeted for March 2026. If you don't receive an email, contact hello@shelterpointng.com with your registered email address.`,
+    question: 'What verification will you run before a listing goes live?',
+    answer:
+      'Before a listing goes live, we check the owner identity and documents. The full checklist will be published before launch. We do not claim BVN or NIN verification on every owner until that process is live and documented.',
+  },
+  {
+    question: 'What happens if I do not receive launch access?',
+    answer:
+      'Waitlist members will be notified before beta opens. If you miss an email, write to hello@shelterpointng.com with the address you used to sign up.',
   },
   {
     question: 'How is data privacy handled?',
-    answer: 'The platform is NDPR compliant. Personal data is encrypted and never shared without explicit consent. You can request data deletion at any time through account settings or by contacting support.',
+    answer:
+      'We only collect what we need for the waitlist and tools. You can request deletion by emailing support. NDPA 2023 and NDPR compliance claims will match documented practice; ask us if you need the current policy.',
   },
   {
     question: 'Which areas of Lagos are covered?',
-    answer: 'Initial coverage includes Lekki, Victoria Island, Ikoyi, Yaba, Ikeja, Surulere, Ajah, Maryland, and Festac. Expansion to all 20 Local Government Areas is planned for Q3 2026.',
+    answer:
+      'ShelterCheck works for any quote in Lagos. Launch supply starts in one corridor we can verify by hand, not every LGA at once.',
   },
 ];
 
@@ -37,7 +47,7 @@ export default function FAQ() {
             Frequently asked questions
           </h2>
         </div>
-        
+
         <div className="space-y-3">
           {faqs.map((faq, index) => (
             <Card key={index} variant="bordered" className="overflow-hidden">
@@ -49,9 +59,12 @@ export default function FAQ() {
                 <span className="text-body-base font-medium text-neutral-900">
                   {faq.question}
                 </span>
-                <span 
+                <span
                   className="text-neutral-700 transition-transform duration-200 flex-shrink-0"
-                  style={{ transform: openIndex === index ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                  style={{
+                    transform:
+                      openIndex === index ? 'rotate(180deg)' : 'rotate(0deg)',
+                  }}
                   aria-hidden="true"
                 >
                   ↓
