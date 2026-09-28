@@ -2,27 +2,32 @@ import Card from '@/components/ui/Card';
 
 const seekerBenefits = [
   {
-    title: 'Almost 50% off first transaction',
-    description: 'Early members pay 4% instead of 7% on their first rental agreement.',
+    title: '4% instead of 7% on your first rental',
+    description:
+      'Founding members pay the preferred rate on their first agreement when verified homes go live.',
   },
   {
-    title: 'Priority notifications',
-    description: `Receive property alerts 24 hours before they're visible to general members.`,
+    title: 'Priority access',
+    description:
+      'Founding members are notified first when listings in their area open.',
   },
   {
-    title: 'Lifetime early pricing',
-    description: `Future fee increases won't apply to accounts created during the beta period.`,
+    title: 'Inspection credits from referrals',
+    description:
+      'Invite friends who join. Earn free inspection credits when they complete signup.',
   },
 ];
 
 const ownerBenefits = [
   {
-    title: 'Three properties for one fee',
-    description: 'List up to three properties during your first month at the single-property rate.',
+    title: 'Demand data by area',
+    description:
+      'See where seekers are looking and at what budgets, before you list.',
   },
   {
-    title: 'Featured placement',
-    description: 'Properties listed during beta receive prominent placement for 45 days.',
+    title: 'Clear fee disclosure',
+    description:
+      'Registered agents can list with fees disclosed and capped. Complementary to good agents, not anti-agent.',
   },
 ];
 
@@ -35,13 +40,15 @@ export default function Benefits() {
             Early member benefits
           </h2>
           <p className="text-body-large text-neutral-700">
-            Joining the waitlist secures several permanent advantages.
+            Join the waitlist for founding terms. Use ShelterCheck free today.
           </p>
         </div>
-        
+
         <div className="grid md:grid-cols-2 gap-8">
           <Card variant="elevated" className="p-6">
-            <h3 className="text-heading-h3 text-neutral-900 mb-4">For property seekers</h3>
+            <h3 className="text-heading-h3 text-neutral-900 mb-4">
+              For property seekers
+            </h3>
             <ul className="space-y-4">
               {seekerBenefits.map((benefit, index) => (
                 <li key={index}>
@@ -57,7 +64,9 @@ export default function Benefits() {
           </Card>
 
           <Card variant="elevated" className="p-6">
-            <h3 className="text-heading-h3 text-neutral-900 mb-4">For property owners</h3>
+            <h3 className="text-heading-h3 text-neutral-900 mb-4">
+              For property owners
+            </h3>
             <ul className="space-y-4">
               {ownerBenefits.map((benefit, index) => (
                 <li key={index}>
