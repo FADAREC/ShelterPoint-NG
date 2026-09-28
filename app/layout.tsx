@@ -15,22 +15,36 @@ const dmSans = DM_Sans({
   weight: ['400', '500', '600', '700'],
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://shelterpoint-ng.onrender.com';
+
 export const metadata: Metadata = {
-  title: 'ShelterPoint | Founding Access',
-  description: 'Verified Lagos homes for people who refuse agent wahala. Priority access and preferred rates for founding members.',
-  keywords: ['Lagos housing', 'verified rentals Lagos', 'Lekki apartments', 'Victoria Island rentals', 'founding member'],
+  metadataBase: new URL(siteUrl),
+  title: 'ShelterPoint | Check cost before you pay',
+  description:
+    'ShelterCheck shows the real move-in cost of any Lagos rent quote. Join ShelterPoint for founding access when verified homes go live.',
+  keywords: [
+    'Lagos rent calculator',
+    'move-in cost Lagos',
+    'Lagos housing',
+    'ShelterCheck',
+    'founding member',
+  ],
   authors: [{ name: 'ShelterPoint' }],
   openGraph: {
-    title: 'ShelterPoint | Founding Access',
-    description: 'Verified Lagos homes. Priority access. Preferred rate. Limited founding spots.',
+    title: 'ShelterPoint | Check cost before you pay',
+    description:
+      'Free move-in cost check. Founding access for verified homes when supply is ready.',
     type: 'website',
     locale: 'en_NG',
     siteName: 'ShelterPoint',
+    url: siteUrl,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ShelterPoint | Founding Access',
-    description: 'Verified Lagos homes for people who refuse agent wahala.',
+    title: 'ShelterPoint | Check cost before you pay',
+    description:
+      'ShelterCheck: day-one cash and fees before you pay anyone in Lagos.',
   },
   robots: {
     index: true,
