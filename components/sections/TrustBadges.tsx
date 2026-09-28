@@ -1,15 +1,15 @@
-import { Shield, MapPin, CheckCircle, Users } from 'lucide-react';
+import { MapPin, Calculator, Users, Shield } from 'lucide-react';
 
 const badges = [
-  { icon: Shield, text: 'NDPR Compliant', color: 'text-green-600' },
-  { icon: MapPin, text: 'Lagos Registered', color: 'text-blue-600' },
-  { icon: CheckCircle, text: 'Bank-Grade Security', color: 'text-green-600' },
-  { icon: Users, text: 'Built by Lagosians', color: 'text-blue-600' },
+  { icon: Calculator, text: 'Free cost check', color: 'text-neutral-800' },
+  { icon: MapPin, text: 'Built for Lagos', color: 'text-neutral-800' },
+  { icon: Users, text: 'Founding waitlist', color: 'text-neutral-800' },
+  { icon: Shield, text: 'Checks before launch', color: 'text-neutral-800' },
 ];
 
 export default function TrustBadges() {
   return (
-    <section className="bg-gray-100 py-12" aria-label="Trust and security badges">
+    <section className="bg-gray-100 py-12" aria-label="Product focus">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-wrap items-center justify-center gap-8 text-gray-600">
           {badges.map((badge, index) => {
