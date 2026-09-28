@@ -1,18 +1,21 @@
 const steps = [
   {
     number: 1,
-    title: 'Join the waitlist',
-    description: `Submit your information above. We'll notify you when platform access becomes available.`,
+    title: 'Run ShelterCheck',
+    description:
+      'Enter the rent quote you were given. See day-one cash and fees before you pay anyone.',
   },
   {
     number: 2,
-    title: 'Browse verified listings',
-    description: 'View property details, pricing comparisons, and owner verification status.',
+    title: 'Join the waitlist',
+    description:
+      'Get founding access, preferred rate, and referral inspection credits when verified homes open.',
   },
   {
     number: 3,
-    title: 'Move in within 14 days',
-    description: 'Connect with owners, arrange viewings, and complete paperwork within our guaranteed timeline.',
+    title: 'Move when supply is real',
+    description:
+      'Listings go live only after identity and document checks. Full checklist published before launch.',
   },
 ];
 
@@ -22,10 +25,10 @@ export default function HowItWorks() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="max-w-2xl mx-auto text-center mb-8">
           <h2 className="text-heading-h2 text-neutral-900 mb-3">
-            How the platform works
+            How it works today
           </h2>
           <p className="text-body-large text-neutral-700">
-            A streamlined process from initial search to moving in.
+            Value first from the tool. Waitlist for when verified supply is ready.
           </p>
         </div>
 
@@ -38,9 +41,7 @@ export default function HowItWorks() {
               <h3 className="text-heading-h4 text-neutral-900 mb-2">
                 {step.title}
               </h3>
-              <p className="text-body-base text-neutral-700">
-                {step.description}
-              </p>
+              <p className="text-body-base text-neutral-700">{step.description}</p>
             </div>
           ))}
         </div>
